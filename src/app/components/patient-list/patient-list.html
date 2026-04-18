@@ -32,17 +32,15 @@
         <th pSortableColumn="patientId">
           # ID <p-sortIcon field="patientId"/>
         </th>
-        <th pSortableColumn="name">
-          Name <p-sortIcon field="name"/>
+        <th pSortableColumn="firstName">
+          Name <p-sortIcon field="firstName"/>
         </th>
-        <th pSortableColumn="age">
-          Age <p-sortIcon field="age"/>
+        <th pSortableColumn="dateOfBirth">
+          Date of Birth <p-sortIcon field="dateOfBirth"/>
         </th>
         <th pSortableColumn="gender">
           Gender <p-sortIcon field="gender"/>
         </th>
-        <th>Contact</th>
-        <th>Email</th>
         <th>Actions</th>
       </tr>
     </ng-template>
@@ -50,16 +48,14 @@
     <ng-template #body let-patient>
       <tr>
         <td>{{ patient.patientId }}</td>
-        <td><strong>{{ patient.name }}</strong></td>
-        <td>{{ patient.age }}</td>
+        <td><strong>{{ patient.firstName }} {{ patient.lastName }}</strong></td>
+        <td>{{ patient.dateOfBirth }}</td>
         <td>
           <p-tag
             [value]="patient.gender"
-            [severity]="patient.gender === 'Male' ? 'info' :
-                        patient.gender === 'Female' ? 'warn' : 'secondary'" />
+            [severity]="patient.gender === 'male' ? 'info' :
+                        patient.gender === 'female' ? 'warn' : 'secondary'" />
         </td>
-        <td>{{ patient.contactNumber }}</td>
-        <td>{{ patient.email }}</td>
         <td>
           <p-button icon="pi pi-pencil" severity="info"
             [rounded]="true" [text]="true"
@@ -75,7 +71,7 @@
 
     <ng-template #emptymessage>
       <tr>
-        <td colspan="7" style="text-align:center; padding: 2rem; color: #888;">
+        <td colspan="5" style="text-align:center; padding: 2rem; color: #888;">
           <i class="pi pi-inbox" style="font-size: 2rem; display:block; margin-bottom:8px;"></i>
           No patients found. Click "Add Patient" to begin.
         </td>
@@ -97,16 +93,22 @@
   <div style="display:flex; flex-direction:column; gap:1rem; padding: 0.5rem 0;">
 
     <div>
-      <label style="display:block; margin-bottom:4px; font-weight:600;">Full Name</label>
-      <input pInputText [(ngModel)]="selectedPatient.name"
-        placeholder="Enter full name" style="width:100%" />
+      <label style="display:block; margin-bottom:4px; font-weight:600;">First Name</label>
+      <input pInputText [(ngModel)]="selectedPatient.firstName"
+        placeholder="Enter first name" style="width:100%" />
+    </div>
+
+    <div>
+      <label style="display:block; margin-bottom:4px; font-weight:600;">Last Name</label>
+      <input pInputText [(ngModel)]="selectedPatient.lastName"
+        placeholder="Enter last name" style="width:100%" />
     </div>
 
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
       <div>
-        <label style="display:block; margin-bottom:4px; font-weight:600;">Age</label>
-        <input pInputText type="number" [(ngModel)]="selectedPatient.age"
-          placeholder="Age" style="width:100%" />
+        <label style="display:block; margin-bottom:4px; font-weight:600;">Date of Birth</label>
+        <input pInputText type="date" [(ngModel)]="selectedPatient.dateOfBirth"
+          style="width:100%" />
       </div>
       <div>
         <label style="display:block; margin-bottom:4px; font-weight:600;">Gender</label>
@@ -116,24 +118,6 @@
           placeholder="Select Gender"
           style="width:100%" />
       </div>
-    </div>
-
-    <div>
-      <label style="display:block; margin-bottom:4px; font-weight:600;">Contact Number</label>
-      <input pInputText [(ngModel)]="selectedPatient.contactNumber"
-        placeholder="e.g. 9876543210" style="width:100%" />
-    </div>
-
-    <div>
-      <label style="display:block; margin-bottom:4px; font-weight:600;">Email</label>
-      <input pInputText [(ngModel)]="selectedPatient.email"
-        placeholder="email@example.com" style="width:100%" />
-    </div>
-
-    <div>
-      <label style="display:block; margin-bottom:4px; font-weight:600;">Address</label>
-      <input pInputText [(ngModel)]="selectedPatient.address"
-        placeholder="Full address" style="width:100%" />
     </div>
 
   </div>

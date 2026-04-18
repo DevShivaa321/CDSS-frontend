@@ -37,10 +37,10 @@ export class PatientListComponent implements OnInit {
   selectedPatient: Patient = this.emptyPatient();
 
   genderOptions = [
-    { label: 'Male', value: 'Male' },
-    { label: 'Female', value: 'Female' },
-    { label: 'Other', value: 'Other' }
-  ];
+  { label: 'Male', value: 'male' },
+  { label: 'Female', value: 'female' },
+  { label: 'Other', value: 'other' }
+];
 
   constructor(
     private patientService: PatientService,
@@ -52,9 +52,9 @@ export class PatientListComponent implements OnInit {
     this.loadPatients();
   }
 
-  emptyPatient(): Patient {
-    return { name: '', age: 0, gender: '', contactNumber: '', email: '', address: '' };
-  }
+ emptyPatient(): Patient {
+  return { firstName: '', lastName: '', dateOfBirth: '', gender: '' };
+}
 
   loadPatients(): void {
     this.loading = true;
@@ -105,7 +105,7 @@ export class PatientListComponent implements OnInit {
 
   confirmDelete(patient: Patient): void {
     this.confirmationService.confirm({
-      message: `Are you sure you want to delete "${patient.name}"?`,
+      message: `Are you sure you want to delete "${patient.firstName} ${patient.lastName}"?`,
       header: 'Confirm Delete',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {

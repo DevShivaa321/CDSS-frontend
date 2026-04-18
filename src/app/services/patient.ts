@@ -4,12 +4,10 @@ import { Observable } from 'rxjs';
 
 export interface Patient {
   patientId?: number;
-  name: string;
-  age: number;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
   gender: string;
-  contactNumber: string;
-  email: string;
-  address: string;
 }
 
 @Injectable({ providedIn: 'root' })

@@ -12,7 +12,7 @@ export interface Patient {
 
 @Injectable({ providedIn: 'root' })
 export class PatientService {
-  private apiUrl = 'http://localhost:8080/api/patients';
+  private apiUrl = 'http://localhost:8081/patients';
 
   constructor(private http: HttpClient) {}
 
@@ -20,15 +20,15 @@ export class PatientService {
     return this.http.get<Patient[]>(this.apiUrl);
   }
 
-  addPatient(patient: Patient): Observable<Patient> {
-    return this.http.post<Patient>(this.apiUrl, patient);
-  }
+  addPatient(patient: Patient): Observable<any> {
+  return this.http.post<any>(this.apiUrl, patient);
+}
 
-  updatePatient(id: number, patient: Patient): Observable<Patient> {
-    return this.http.put<Patient>(`${this.apiUrl}/${id}`, patient);
-  }
+updatePatient(id: number, patient: Patient): Observable<any> {
+  return this.http.put<any>(`${this.apiUrl}/${id}`, patient);
+}
 
-  deletePatient(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
-  }
+deletePatient(id: number): Observable<any> {
+  return this.http.delete<any>(`${this.apiUrl}/${id}`);
+}
 }

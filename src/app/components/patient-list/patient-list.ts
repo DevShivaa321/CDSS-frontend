@@ -82,41 +82,71 @@ export class PatientListComponent implements OnInit {
   }
 
   savePatient(): void {
-    if (this.isEditMode && this.selectedPatient.patientId) {
-      this.patientService.updatePatient(this.selectedPatient.patientId, this.selectedPatient).subscribe({
-        next: () => {
-          this.messageService.add({ severity: 'success', summary: 'Updated', detail: 'Patient updated' });
-          this.loadPatients();
-          this.displayDialog = false;
-        },
-        error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Update failed' })
-      });
-    } else {
-      this.patientService.addPatient(this.selectedPatient).subscribe({
-        next: () => {
-          this.messageService.add({ severity: 'success', summary: 'Added', detail: 'Patient added successfully' });
-          this.loadPatients();
-          this.displayDialog = false;
-        },
-        error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Add failed' })
-      });
-    }
-  }
-
-  confirmDelete(patient: Patient): void {
-    this.confirmationService.confirm({
-      message: `Are you sure you want to delete "${patient.firstName} ${patient.lastName}"?`,
-      header: 'Confirm Delete',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.patientService.deletePatient(patient.patientId!).subscribe({
-          next: () => {
-            this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'Patient removed' });
-            this.loadPatients();
-          },
-          error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Delete failed' })
+  if (this.isEditMode && this.selectedPatient.patientId) {
+    this.patientService.updatePatient(this.selectedPatient.patientId, this.selectedPatient).subscribe({
+      next: () => {
+        this.messageService.add({ 
+          severity: 'success', 
+          summary: 'Success', 
+          detail: 'Patient updated successfully' 
+        });
+        this.loadPatients();
+        this.displayDialog = false;
+      },
+      error: () => {
+        this.messageService.add({ 
+          severity: 'error', 
+          summary: 'Error', 
+          detail: 'Failed to update patient' 
+        });
+      }
+    });
+  } else {
+    this.patientService.addPatient(this.selectedPatient).subscribe({
+      next: () => {
+        this.messageService.add({ 
+          severity: 'success', 
+          summary: 'Success', 
+          detail: 'Patient added successfully' 
+        });
+        this.loadPatients();
+        this.displayDialog = false;
+      },
+      error: () => {
+        this.messageService.add({ 
+          severity: 'error', 
+          summary: 'Error', 
+          detail: 'Failed to add patient' 
         });
       }
     });
   }
+}
+
+confirmDelete(patient: Patient): void {
+  this.confirmationService.confirm({
+    message: `Are you sure you want to delete "${patient.firstName} ${patient.lastName}"?`,
+    header: 'Confirm Delete',
+    icon: 'pi pi-exclamation-triangle',
+    accept: () => {
+      this.patientService.deletePatient(patient.patientId!).subscribe({
+        next: () => {
+          this.messageService.add({ 
+            severity: 'success', 
+            summary: 'Deleted', 
+            detail: `${patient.firstName} ${patient.lastName} removed successfully` 
+          });
+          this.loadPatients();
+        },
+        error: () => {
+          this.messageService.add({ 
+            severity: 'error', 
+            summary: 'Error', 
+            detail: 'Failed to delete patient' 
+          });
+        }
+      });
+    }
+  });
+}
 }

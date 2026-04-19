@@ -103,6 +103,10 @@
             [rounded]="true" [text]="true"
             (onClick)="viewPatient(patient.patientId!)"
             pTooltip="View Patient" />
+            <p-button icon="pi pi-heart" severity="warn"
+            [rounded]="true" [text]="true"
+            (onClick)="openHistoryDialog(patient)"
+            pTooltip="Medical History" />
         </td>
       </tr>
     </ng-template>
@@ -169,6 +173,80 @@
       icon="pi pi-check"
       severity="success"
       (onClick)="savePatient()" />
+  </ng-template>
+
+</p-dialog>
+
+<!-- Medical History Dialog -->
+<p-dialog
+  [(visible)]="displayHistoryDialog"
+  [header]="'Medical History — ' + (selectedPatient.firstName || '') + ' ' + (selectedPatient.lastName || '')"
+  [modal]="true"
+  [style]="{width: '680px'}"
+  [draggable]="false"
+  [resizable]="false">
+
+  <!-- Add Record Form -->
+  <div style="display:grid; grid-template-columns:1fr 1fr auto auto; gap:0.75rem; align-items:flex-end; margin-bottom:1.25rem;">
+    <div>
+      <label style="display:block; margin-bottom:4px; font-weight:600;">Sugar Level (mg/dL)</label>
+      <input pInputText type="number" [(ngModel)]="newSugarLevel"
+        placeholder="e.g. 140" style="width:100%" />
+    </div>
+    <div style="display:flex; align-items:center; gap:8px; padding-bottom:4px;">
+      <p-checkbox [(ngModel)]="newHasDiabetes" [binary]="true" inputId="diabetesCheck" />
+      <label for="diabetesCheck" style="font-weight:600; cursor:pointer;">Has Diabetes</label>
+    </div>
+    <p-button
+      label="Add Record"
+      icon="pi pi-plus"
+      severity="success"
+      [loading]="addingHistory"
+      (onClick)="addHistory()" />
+  </div>
+
+  <!-- History Table -->
+  <p-table
+    [value]="patientHistories"
+    [loading]="loadingHistory"
+    styleClass="p-datatable-striped p-datatable-gridlines"
+    [paginator]="true"
+    [rows]="5">
+
+    <ng-template #header>
+      <tr>
+        <th>Record ID</th>
+        <th>Sugar Level</th>
+        <th>Diabetic</th>
+      </tr>
+    </ng-template>
+
+    <ng-template #body let-h>
+      <tr>
+        <td>{{ h.id }}</td>
+        <td>{{ h.sugarLevel }} mg/dL</td>
+        <td>
+          <p-tag
+            [value]="h.hasDiabetes ? 'Yes' : 'No'"
+            [severity]="h.hasDiabetes ? 'danger' : 'success'" />
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template #emptymessage>
+      <tr>
+        <td colspan="3" style="text-align:center; padding:1.5rem; color:#888;">
+          <i class="pi pi-inbox" style="font-size:1.5rem; display:block; margin-bottom:6px;"></i>
+          No history records found for this patient.
+        </td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+
+  <ng-template #footer>
+    <p-button label="Close" icon="pi pi-times"
+      severity="secondary" (onClick)="displayHistoryDialog = false" />
   </ng-template>
 
 </p-dialog>

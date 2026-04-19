@@ -21,7 +21,11 @@ export class PatientService {
   }
 
   addPatient(patient: Patient): Observable<any> {
-  return this.http.post<any>(this.apiUrl, patient);
+  return this.http.post(
+    this.apiUrl, 
+    patient, 
+    { responseType: 'text' }
+  );
 }
 
 updatePatient(id: number, patient: Patient): Observable<any> {
@@ -42,4 +46,9 @@ deletePatient(id: number): Observable<any> {
 getPatientById(id: number): Observable<Patient> {
   return this.http.get<Patient>(`${this.apiUrl}/${id}`);
 }
+
+searchPatients(name: string): Observable<Patient[]> {
+  return this.http.get<Patient[]>(`${this.apiUrl}/search?name=${name}`);
+}
+
 }

@@ -33,6 +33,8 @@ export class PatientListComponent implements OnInit {
   displayDialog = false;
   isEditMode = false;
   loading = true;
+  searchQuery: string = '';
+  allPatients: Patient[] = [];
 
   selectedPatient: Patient = this.emptyPatient();
 
@@ -57,17 +59,22 @@ export class PatientListComponent implements OnInit {
 }
 
   loadPatients(): void {
-    this.loading = true;
-    this.patientService.getAllPatients().subscribe({
-      next: (data) => { this.patients = data; this.loading = false; },
-      error: () => {
-        this.messageService.add({
-          severity: 'error', summary: 'Error', detail: 'Failed to load patients'
-        });
-        this.loading = false;
-      }
-    });
-  }
+  this.loading = true;
+  this.patientService.getAllPatients().subscribe({
+    next: (data) => { 
+      this.patients = data; 
+      this.allPatients = data;  // keep a full copy
+      this.loading = false; 
+    },
+    error: () => { 
+      this.messageService.add({ 
+        severity: 'error', summary: 'Error', 
+        detail: 'Failed to load patients' 
+      }); 
+      this.loading = false; 
+    }
+  });
+}
 
   openAddDialog(): void {
     this.selectedPatient = this.emptyPatient();
@@ -157,6 +164,41 @@ viewPatient(id: number): void {
       });
     }
   });
+}
+
+searchPatients(): void {
+  if (!this.searchQuery.trim()) {
+    this.patients = this.allPatients;
+    return;
+  }
+
+  const query = this.searchQuery.toLowerCase().trim();
+
+  // Search by ID if query is a number
+  if (!isNaN(Number(query))) {
+    this.patients = this.allPatients.filter(p => 
+      p.patientId === Number(query)
+    );
+  } else {
+    // Search by name
+    this.patients = this.allPatients.filter(p =>
+      p.firstName.toLowerCase().includes(query) ||
+      p.lastName.toLowerCase().includes(query)
+    );
+  }
+
+  if (this.patients.length === 0) {
+    this.messageService.add({ 
+      severity: 'warn', 
+      summary: 'No Results', 
+      detail: `No patients found for "${this.searchQuery}"` 
+    });
+  }
+}
+
+clearSearch(): void {
+  this.searchQuery = '';
+  this.patients = this.allPatients;
 }
 
 }

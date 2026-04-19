@@ -5,17 +5,51 @@
 
   <!-- Header Toolbar -->
   <p-toolbar styleClass="mb-4">
-    <ng-template #start>
-      <h2 style="margin:0; color: #1e3a5f;">
-        <i class="pi pi-users" style="margin-right: 8px;"></i>
-        Patient Management
-      </h2>
-    </ng-template>
-    <ng-template #end>
-      <p-button label="Add Patient" icon="pi pi-plus"
-        severity="success" (onClick)="openAddDialog()" />
-    </ng-template>
-  </p-toolbar>
+  <ng-template #start>
+    <h2 style="margin:0; color: #1e3a5f;">
+      <i class="pi pi-users" style="margin-right: 8px;"></i>
+      Patient Management
+    </h2>
+  </ng-template>
+
+  <ng-template #end>
+    <div style="display:flex; align-items:center; gap: 0.5rem;">
+
+      <!-- Search Input -->
+      <input 
+        pInputText 
+        [(ngModel)]="searchQuery"
+        placeholder="Search by name or ID..."
+        style="width: 220px;"
+        (keyup.enter)="searchPatients()" />
+
+      <!-- Search Button -->
+      <p-button 
+        icon="pi pi-search" 
+        severity="info"
+        pTooltip="Search Patient"
+        (onClick)="searchPatients()" />
+
+      <!-- Clear Button -->
+      <p-button 
+        icon="pi pi-times" 
+        severity="secondary"
+        pTooltip="Clear Search"
+        (onClick)="clearSearch()" />
+
+      <!-- Divider -->
+      <span style="border-left: 1px solid #ccc; height: 24px; margin: 0 4px;"></span>
+
+      <!-- Add Patient Button -->
+      <p-button 
+        label="Add Patient" 
+        icon="pi pi-plus"
+        severity="success" 
+        (onClick)="openAddDialog()" />
+
+    </div>
+  </ng-template>
+</p-toolbar>
 
   <!-- Patient Table -->
   <p-table

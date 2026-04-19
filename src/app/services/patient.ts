@@ -25,10 +25,21 @@ export class PatientService {
 }
 
 updatePatient(id: number, patient: Patient): Observable<any> {
-  return this.http.put<any>(`${this.apiUrl}/${id}`, patient);
+  return this.http.put(
+    `${this.apiUrl}/${id}`, 
+    patient, 
+    { responseType: 'text' }
+  );
 }
 
 deletePatient(id: number): Observable<any> {
-  return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  return this.http.delete(
+    `${this.apiUrl}/${id}`, 
+    { responseType: 'text' }
+  );
+}
+
+getPatientById(id: number): Observable<Patient> {
+  return this.http.get<Patient>(`${this.apiUrl}/${id}`);
 }
 }

@@ -86,17 +86,15 @@ export class PatientListComponent implements OnInit {
     this.patientService.updatePatient(this.selectedPatient.patientId, this.selectedPatient).subscribe({
       next: () => {
         this.messageService.add({ 
-          severity: 'success', 
-          summary: 'Success', 
+          severity: 'success', summary: 'Success', 
           detail: 'Patient updated successfully' 
         });
-        this.loadPatients();
         this.displayDialog = false;
+        setTimeout(() => this.loadPatients(), 100);
       },
       error: () => {
         this.messageService.add({ 
-          severity: 'error', 
-          summary: 'Error', 
+          severity: 'error', summary: 'Error', 
           detail: 'Failed to update patient' 
         });
       }
@@ -105,17 +103,15 @@ export class PatientListComponent implements OnInit {
     this.patientService.addPatient(this.selectedPatient).subscribe({
       next: () => {
         this.messageService.add({ 
-          severity: 'success', 
-          summary: 'Success', 
+          severity: 'success', summary: 'Success', 
           detail: 'Patient added successfully' 
         });
-        this.loadPatients();
         this.displayDialog = false;
+        setTimeout(() => this.loadPatients(), 100);
       },
       error: () => {
         this.messageService.add({ 
-          severity: 'error', 
-          summary: 'Error', 
+          severity: 'error', summary: 'Error', 
           detail: 'Failed to add patient' 
         });
       }
@@ -132,16 +128,14 @@ confirmDelete(patient: Patient): void {
       this.patientService.deletePatient(patient.patientId!).subscribe({
         next: () => {
           this.messageService.add({ 
-            severity: 'success', 
-            summary: 'Deleted', 
-            detail: `${patient.firstName} ${patient.lastName} removed successfully` 
+            severity: 'success', summary: 'Deleted', 
+            detail: `${patient.firstName} removed successfully` 
           });
-          this.loadPatients();
+          setTimeout(() => this.loadPatients(), 100);
         },
         error: () => {
           this.messageService.add({ 
-            severity: 'error', 
-            summary: 'Error', 
+            severity: 'error', summary: 'Error', 
             detail: 'Failed to delete patient' 
           });
         }
@@ -149,4 +143,20 @@ confirmDelete(patient: Patient): void {
     }
   });
 }
+viewPatient(id: number): void {
+  this.patientService.getPatientById(id).subscribe({
+    next: (data) => {
+      this.selectedPatient = data;
+      this.isEditMode = false;
+      this.displayDialog = true;
+    },
+    error: () => {
+      this.messageService.add({ 
+        severity: 'error', summary: 'Error', 
+        detail: 'Failed to fetch patient details' 
+      });
+    }
+  });
+}
+
 }

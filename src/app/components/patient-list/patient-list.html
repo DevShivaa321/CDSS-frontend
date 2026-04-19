@@ -65,6 +65,10 @@
             [rounded]="true" [text]="true"
             (onClick)="confirmDelete(patient)"
             pTooltip="Delete Patient" />
+          <p-button icon="pi pi-eye" severity="success"
+            [rounded]="true" [text]="true"
+            (onClick)="viewPatient(patient.patientId!)"
+            pTooltip="View Patient" />
         </td>
       </tr>
     </ng-template>
